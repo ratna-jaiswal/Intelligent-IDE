@@ -95,7 +95,7 @@ function App() {
       html: { apiLang: 'html', ext: 'html' },
       css: { apiLang: 'css', ext: 'css' },
       markdown: { apiLang: 'markdown', ext: 'md' },
-      json: { apiLang: 'json', ext: 'json' },
+      json: { apiLang: 'json', ext: 'json' }
     };
   
     const languageInfo = languageMap[selectedLanguage] || { apiLang: 'nodejs', ext: 'js' };
