@@ -28,16 +28,16 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
+"eslintConfig": {
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "eslint:recommended"
+  ]
+}
+,
   "browserslist": {
     "production": [
       ">0.2%",
@@ -51,8 +51,7 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
     "gh-pages": "^6.3.0"
-  },
-
-  "homepage": "https://github.com/ratna-jaiswal/Intelligent-IDE.git"
+  }
 }
