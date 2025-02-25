@@ -79,7 +79,7 @@ function App() {
     window.codeExplanationTimeout = setTimeout(() => {
       getCodeExplanation(newCode);
     }, 1000);
-  }, [getCodeExplanation]);
+  }, [code]);
   
 
   
