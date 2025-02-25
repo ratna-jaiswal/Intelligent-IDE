@@ -1,70 +1,71 @@
-# Getting Started with Create React App
+# Intelligent-IDE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Intelligent-IDE is a web-based code editor with AI-assisted chat and live code explanations. It integrates **Gemini AI API** for code explanation and assistance, along with **OneCompiler API** for executing code in multiple programming languages.
 
-## Available Scripts
+## Features
+- Code editor with syntax highlighting (CodeMirror)
+- Supports multiple programming languages
+- AI-assisted chat for debugging and explanations
+- Live AI-powered code explanations
+- Console output for executed code
 
-In the project directory, you can run:
+## Prerequisites
+Make sure you have the following installed:
+- **Node.js** (>= 16.x)
+- **npm** or **yarn**
+- An API key for **Gemini AI** (Google Generative AI API)
+- An API key for **OneCompiler API** (RapidAPI)
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/Intelligent-IDE.git
+   cd Intelligent-IDE
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Configuration
+Before running the app, set up your environment variables.
 
-### `npm test`
+1. Create a **.env** file in the project root:
+   ```sh
+   touch .env
+   ```
+2. Add the following keys and replace them with your actual API keys:
+   ```sh
+   REACT_APP_GEMINI_API_KEY=your-gemini-api-key
+   REACT_APP_ONECOMPILER_API_KEY=your-onecompiler-api-key
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running the App
+To start the development server, run:
+```sh
+npm start
+```
+This will launch the application at **http://localhost:3000/**.
 
-### `npm run build`
+## Usage
+- Select a programming language from the dropdown.
+- Write or paste your code into the editor.
+- Click the **Run** button to execute the code.
+- View the console output below the editor.
+- Use the AI chat to ask questions related to your code.
+- View live AI-generated code explanations.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies Used
+- **React** (UI Framework)
+- **CodeMirror** (Code Editor)
+- **Google Gemini API** (AI Assistance)
+- **OneCompiler API** (Code Execution)
+- **Axios** (API Requests)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Contributing
+Feel free to contribute by creating issues or submitting pull requests. Make sure to follow coding best practices and include proper documentation.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Contact
+For questions or issues, reach out via GitHub Issues or email at your-email@example.com.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

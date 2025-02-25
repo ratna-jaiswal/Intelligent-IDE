@@ -1,38 +1,407 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* VS Code-like IDE styling */
+.ide-container {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow: hidden;
+}
+
+/* Top Navigation Bar */
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #333333;
+  padding: 0;
+  height: 32px;
+  border-bottom: 1px solid #252526;
+  flex-shrink: 0;
+}
+
+.left-nav {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.left-nav span {
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.left-nav span:hover {
+  background-color: #2a2d2e;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Left Section - Code Editor and Console */
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  border-right: 1px solid #252526;
+  overflow: hidden;
+}
+
+.code-area {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px;
+  background-color: #252526;
+  border-bottom: 1px solid #3c3c3c;
+  flex-shrink: 0;
+}
+
+.language-select {
+  height: 24px;
+  padding: 0 8px;
+  background-color: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  border-radius: 2px;
+  color: #d4d4d4;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.language-select:hover {
+  background-color: #4c4c4c;
+}
+
+.code-header button {
+  padding: 4px 12px;
+  background-color: #0e639c;
+  border: none;
+  border-radius: 2px;
   color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 24px;
 }
 
-.App-link {
-  color: #61dafb;
+.code-header button:hover {
+  background-color: #1177bb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.code-editor {
+  flex: 1;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  border: none;
+  padding: 12px;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  overflow-y: auto;
+}
+
+/* Syntax highlighting */
+.code-editor.language-javascript .keyword {
+  color: #569cd6;
+}
+
+.code-editor.language-javascript .string {
+  color: #ce9178;
+}
+
+.code-editor.language-javascript .comment {
+  color: #6a9955;
+}
+
+.code-editor.language-javascript .number {
+  color: #b5cea8;
+}
+
+.console-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+  background-color: #1e1e1e;
+  border-top: 1px solid #3c3c3c;
+  overflow: hidden;
+}
+
+.console-area h3 {
+  padding: 8px 12px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: normal;
+  background-color: #252526;
+  border-bottom: 1px solid #3c3c3c;
+  flex-shrink: 0;
+}
+
+.console-area pre {
+  flex: 1;
+  margin: 0;
+  padding: 12px;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+/* Right Section - Chat and Explanation */
+.right-section {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  background-color: #252526;
+  overflow: hidden;
+}
+
+.chat-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #3c3c3c;
+  overflow: hidden;
+  min-height: 300px;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #3c3c3c;
+  flex-shrink: 0;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+.chat-language-select {
+  height: 24px;
+  padding: 0 8px;
+  background-color: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  border-radius: 2px;
+  color: #d4d4d4;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.chat-response {
+  flex: 1;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-y: auto;
+  background-color: #1e1e1e;
+  min-height: 0;
+}
+
+.chat-input {
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  background-color: #252526;
+  border-top: 1px solid #3c3c3c;
+  flex-shrink: 0;
+}
+
+.chat-input textarea {
+  flex: 1;
+  height: 60px;
+  padding: 8px;
+  background-color: #1e1e1e;
+  border: 1px solid #3c3c3c;
+  border-radius: 2px;
+  color: #d4d4d4;
+  font-size: 13px;
+  resize: none;
+  outline: none;
+}
+
+.chat-input button {
+  padding: 6px 12px;
+  background-color: #0e639c;
+  border: none;
+  border-radius: 2px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chat-input button:hover {
+  background-color: #1177bb;
+}
+
+.explanation-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.explanation-section h3 {
+  padding: 8px 12px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: normal;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #3c3c3c;
+  flex-shrink: 0;
+}
+
+.explanation-content {
+  flex: 1;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-y: auto;
+  background-color: #1e1e1e;
+  white-space: pre-wrap;
+  min-height: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .right-section {
+    width: 350px;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
   }
+
+  .right-section {
+    width: 100%;
+    height: 50vh;
+  }
+
+  .left-section {
+    height: 50vh;
+  }
+
+  .code-area {
+    min-height: 200px;
+  }
+
+  .console-area {
+    min-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .left-nav span {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .language-select,
+  .chat-language-select {
+    max-width: 100px;
+    font-size: 12px;
+  }
+
+  .code-header {
+    flex-wrap: wrap;
+  }
+
+  .code-header button {
+    flex: 1;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #424242;
+  border: 3px solid #1e1e1e;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+/* Selection Styling */
+::selection {
+  background-color: #264f78;
+  color: #ffffff;
+}
+
+
+/* Ensure CodeMirror background matches previous textarea */
+.code-mirror-editor .cm-editor {
+  background-color: #1e1e1e; 
+  color: #ffffff; 
+  border-radius: 8px; 
+  padding: 10px;
+  font-size: 14px;
+  font-family: 'Fira Code', monospace; 
+}
+
+/* Make the line numbers background dark */
+.code-mirror-editor .cm-gutters {
+  background-color: #1e1e1e !important;
+  color: #bbbbbb !important; 
+  border-right: 1px solid #333; 
+}
+
+/* Ensure the actual code inside has correct contrast */
+.code-mirror-editor .cm-content {
+  caret-color: white;
+}
+
+/* Style for the active line (optional) */
+.code-mirror-editor .cm-activeLine {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Style the scrollbar inside the editor */
+.code-mirror-editor .cm-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #222;
+}
+/* Make line numbers dark */
+.cm-gutters {
+  background-color: #1e1e1e !important; 
+  color: #6a6a6a !important; 
+  border-right: 1px solid #3c3c3c !important;
 }
