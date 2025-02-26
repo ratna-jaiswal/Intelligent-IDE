@@ -70,72 +70,82 @@
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
-  padding: 8px;
+  padding: 8px 12px;
   background-color: #252526;
   border-bottom: 1px solid #3c3c3c;
   flex-shrink: 0;
 }
 
 .language-select {
-  height: 24px;
+  height: 28px;
   padding: 0 8px;
   background-color: #3c3c3c;
   border: 1px solid #3c3c3c;
-  border-radius: 2px;
+  border-radius: 3px;
   color: #d4d4d4;
   font-size: 13px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .language-select:hover {
   background-color: #4c4c4c;
+  border-color: #565656;
 }
 
 .code-header button {
-  padding: 4px 12px;
+  padding: 6px 16px;
   background-color: #0e639c;
   border: none;
-  border-radius: 2px;
+  border-radius: 3px;
   color: white;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
-  height: 24px;
+  transition: all 0.2s ease;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .code-header button:hover {
   background-color: #1177bb;
 }
 
-.code-editor {
-  flex: 1;
-  background-color: #1e1e1e;
-  color: #d4d4d4;
+.console-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #252526;
+  border-bottom: 1px solid #3c3c3c;
+  flex-shrink: 0;
+}
+
+.console-header h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: normal;
+  color: #cccccc;
+}
+
+.debug-button {
+  padding: 4px 12px;
+  background-color: #6c2022;
+  color: white;
   border: none;
-  padding: 12px;
-  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.5;
-  resize: none;
-  outline: none;
-  overflow-y: auto;
+  border-radius: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-/* Syntax highlighting */
-.code-editor.language-javascript .keyword {
-  color: #569cd6;
-}
-
-.code-editor.language-javascript .string {
-  color: #ce9178;
-}
-
-.code-editor.language-javascript .comment {
-  color: #6a9955;
-}
-
-.code-editor.language-javascript .number {
-  color: #b5cea8;
+.debug-button:hover {
+  background-color: #8b2e30;
 }
 
 .console-area {
@@ -148,24 +158,33 @@
   overflow: hidden;
 }
 
-.console-area h3 {
-  padding: 8px 12px;
-  margin: 0;
-  font-size: 13px;
-  font-weight: normal;
-  background-color: #252526;
-  border-bottom: 1px solid #3c3c3c;
-  flex-shrink: 0;
-}
-
 .console-area pre {
   flex: 1;
   margin: 0;
-  padding: 12px;
+  padding: 12px 16px;
   font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
   font-size: 13px;
+  line-height: 1.6;
   overflow-y: auto;
   white-space: pre-wrap;
+  color: #cccccc;
+}
+
+.console-input {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #252526;
+  border: none;
+  border-top: 1px solid #3c3c3c;
+  color: #d4d4d4;
+  font-size: 13px;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.console-input:focus {
+  border-top: 1px solid #0e639c;
 }
 
 /* Right Section - Chat and Explanation */
@@ -196,48 +215,43 @@
   flex-shrink: 0;
 }
 
-.debug-button {
-  padding: 5px 10px;
-  background-color: #ff4444;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.debug-button:hover {
-  background-color: #cc0000;
-}
-
 .chat-header h3 {
   margin: 0;
   font-size: 13px;
   font-weight: normal;
+  color: #cccccc;
 }
 
 .chat-language-select {
-  height: 24px;
+  height: 26px;
   padding: 0 8px;
   background-color: #3c3c3c;
   border: 1px solid #3c3c3c;
-  border-radius: 2px;
+  border-radius: 3px;
   color: #d4d4d4;
   font-size: 13px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-language-select:hover {
+  background-color: #4c4c4c;
+  border-color: #565656;
 }
 
 .chat-response {
   flex: 1;
-  padding: 12px;
+  padding: 16px;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.6;
   overflow-y: auto;
   background-color: #1e1e1e;
   min-height: 0;
+  color: #cccccc;
 }
 
 .chat-input {
-  padding: 8px;
+  padding: 12px;
   display: flex;
   gap: 8px;
   background-color: #252526;
@@ -248,25 +262,32 @@
 .chat-input textarea {
   flex: 1;
   height: 60px;
-  padding: 8px;
+  padding: 10px;
   background-color: #1e1e1e;
   border: 1px solid #3c3c3c;
-  border-radius: 2px;
+  border-radius: 3px;
   color: #d4d4d4;
   font-size: 13px;
   resize: none;
   outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.chat-input textarea:focus {
+  border-color: #0e639c;
 }
 
 .chat-input button {
-  padding: 6px 12px;
+  padding: 8px 16px;
   background-color: #0e639c;
   border: none;
-  border-radius: 2px;
+  border-radius: 3px;
   color: white;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  align-self: flex-end;
 }
 
 .chat-input button:hover {
@@ -289,23 +310,64 @@
   background-color: #2d2d2d;
   border-bottom: 1px solid #3c3c3c;
   flex-shrink: 0;
+  color: #cccccc;
 }
 
 .explanation-content {
   flex: 1;
-  padding: 12px;
+  padding: 16px;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.6;
   overflow-y: auto;
   background-color: #1e1e1e;
   white-space: pre-wrap;
   min-height: 0;
+  color: #cccccc;
+}
+
+/* CodeMirror Styling */
+.code-mirror-editor .cm-editor {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 0;
+  height: 100%;
+  font-size: 14px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+}
+
+.code-mirror-editor .cm-gutters {
+  background-color: #1e1e1e !important;
+  border-right: 1px solid #333 !important;
+  color: #858585 !important;
+  padding: 0 3px;
+}
+
+.code-mirror-editor .cm-activeLineGutter {
+  background-color: #282828 !important;
+  color: #c6c6c6 !important;
+}
+
+.code-mirror-editor .cm-activeLine {
+  background-color: #282828 !important;
+}
+
+.code-mirror-editor .cm-content {
+  padding: 4px 0;
+}
+
+.code-mirror-editor .cm-line {
+  padding: 0 8px;
+}
+
+.code-mirror-editor {
+  flex: 1;
+  overflow: auto !important; /* Enable scrolling in CodeMirror */
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .right-section {
-    width: 350px;
+    width: 400px;
   }
 }
 
@@ -322,14 +384,6 @@
   .left-section {
     height: 50vh;
   }
-
-  .code-area {
-    min-height: 200px;
-  }
-
-  .console-area {
-    min-height: 150px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -341,22 +395,21 @@
   .language-select,
   .chat-language-select {
     max-width: 100px;
-    font-size: 12px;
   }
 
   .code-header {
-    flex-wrap: wrap;
+    padding: 8px;
   }
 
-  .code-header button {
-    flex: 1;
+  .chat-input {
+    padding: 8px;
   }
 }
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -365,8 +418,8 @@
 
 ::-webkit-scrollbar-thumb {
   background: #424242;
-  border: 3px solid #1e1e1e;
-  border-radius: 7px;
+  border: 2px solid #1e1e1e;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -377,44 +430,4 @@
 ::selection {
   background-color: #264f78;
   color: #ffffff;
-}
-
-
-/* Ensure CodeMirror background matches previous textarea */
-.code-mirror-editor .cm-editor {
-  background-color: #1e1e1e;
-  color: #ffffff; 
-  border-radius: 8px; 
-  padding: 10px;
-  font-size: 14px;
-  font-family: 'Fira Code', monospace; 
-}
-
-/* Make the line numbers background dark */
-.code-mirror-editor .cm-gutters {
-  background-color: #1e1e1e !important;
-  color: #bbbbbb !important; 
-  border-right: 1px solid #333; 
-}
-
-/* Ensure the actual code inside has correct contrast */
-.code-mirror-editor .cm-content {
-  caret-color: white;
-}
-
-/* Style for the active line (optional) */
-.code-mirror-editor .cm-activeLine {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Style the scrollbar inside the editor */
-.code-mirror-editor .cm-scroller {
-  scrollbar-width: thin;
-  scrollbar-color: #555 #222;
-}
-/* Make line numbers dark */
-.cm-gutters {
-  background-color: #1e1e1e !important; 
-  color: #6a6a6a !important; 
-  border-right: 1px solid #3c3c3c !important;
 }

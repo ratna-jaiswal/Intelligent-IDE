@@ -10,6 +10,7 @@ import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import { markdown } from "@codemirror/lang-markdown";
 import { json } from "@codemirror/lang-json";
+// import { Bug, Play } from 'lucide-react';
 
 function App() {
   const geminiApiKey = process.env.REACT_APP_GEMINI_API_KEY;
@@ -32,6 +33,7 @@ function App() {
   const [chatResponse, setChatResponse] = useState('AI response will appear here...');
   const [codeExplanation, setCodeExplanation] = useState('Code explanation will appear here...');
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
+  const [consoleInput, setConsoleInput] = useState(''); // New state for console input
 
   const getCodeExplanation = async (currentCode: string) => {
     if (!currentCode.trim() || currentCode === '// Write your code here') {
@@ -58,8 +60,7 @@ function App() {
           ]
         }
       );
-      
-      console.log("Gemini API Response:", response.data); // Debugging line
+
       const aiResponse = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No explanation available.';
       setCodeExplanation(aiResponse);
     } catch (error) {
@@ -70,19 +71,19 @@ function App() {
 
   const handleCodeChange = useCallback((newCode: string) => {
     setCode(newCode);
-    
+
     // Clear previous timeout before setting a new one
     if (window.codeExplanationTimeout) {
       clearTimeout(window.codeExplanationTimeout);
     }
-    
+
     window.codeExplanationTimeout = setTimeout(() => {
       getCodeExplanation(newCode);
     }, 1000);
   }, [code]);
-  
 
-  
+
+
 
   const handleRun = async () => {
     setConsoleOutput('Executing code...');
@@ -95,15 +96,15 @@ function App() {
       html: { apiLang: 'html', ext: 'html' },
       css: { apiLang: 'css', ext: 'css' },
       markdown: { apiLang: 'markdown', ext: 'md' },
-      json: { apiLang: 'json', ext: 'json' }
+      json: { apiLang: 'json', ext: 'json' },
     };
-  
+
     const languageInfo = languageMap[selectedLanguage] || { apiLang: 'nodejs', ext: 'js' };
-    const fileName = `test.${languageInfo.ext}`; 
-  
+    const fileName = `test.${languageInfo.ext}`;
+
     const payload = {
       language: languageInfo.apiLang,
-      stdin: '',
+      stdin: consoleInput, // Pass console input to stdin
       files: [{ name: fileName, content: code }],
     };
 
@@ -130,6 +131,15 @@ function App() {
   };
 
   const handleDebug = async () => {
+
+    if (!code.trim() || code === '// Write your code here') {
+
+      setChatResponse('AI: The code section is empty. Please write some code to debug.');
+
+      return;
+
+    }
+
     setChatResponse('Debugging...');
     try {
       const response = await axios.post(
@@ -139,7 +149,7 @@ function App() {
             {
               parts: [
                 {
-                  text: `You are an expert programmer. Here’s ${selectedLanguage} code with an issue:\n\`\`\`\n${code}\n\`\`\`\nConsole Output/Error:\n\`\`\`\n${consoleOutput}\n\`\`\`\nPlease provide the corrected ${selectedLanguage} code in a \`\`\` block, followed by a concise explanation of what was fixed. Format your response as:\n\`\`\`\n<corrected code>\n\`\`\`\nExplanation: <what was changed>`
+                  text: `You are an expert programmer. Here’s ${selectedLanguage} code with an issue:\n\`\`\`\n${code}\n\`\`\`\nConsole Output/Error:\n\`\`\`\n${consoleOutput}\n\`\`\`\nProvide the corrected code in a \`\`\` block without language identifiers, followed by a concise explanation of what was fixed. Format your response as:\n\`\`\`\n<corrected code>\n\`\`\`\nExplanation: <what was changed>`
                 }
               ]
             }
@@ -150,7 +160,7 @@ function App() {
       const aiResponse = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No correction provided.';
       const codeMatch = aiResponse.match(/```[\s\S]*?```/);
       const explanationMatch = aiResponse.match(/Explanation:[\s\S]*/);
-      
+
       const correctedCode = codeMatch ? codeMatch[0].replace(/```/g, '').trim() : aiResponse;
       const explanation = explanationMatch ? explanationMatch[0].trim() : 'No explanation provided.';
 
@@ -191,7 +201,7 @@ function App() {
               {
                 parts: [
                   {
-                    text: `You are an expert programmer. Based on the request: "${chatMessage}", generate ${selectedLanguage} code to accomplish the task. Provide only the code, no explanations, within a \`\`\` block.`
+                    text: `You are an expert programmer. Based on the request: "${chatMessage}", generate ${selectedLanguage} code to accomplish the task. Provide only the code without language identifiers, within a \`\`\` block, no explanations.`
                   }
                 ]
               }
@@ -230,8 +240,17 @@ function App() {
       console.error('API Error:', error.response?.data || error.message);
       setChatResponse('Error processing request.');
     }
-
     setChatMessage('');
+  };
+
+  const handleConsoleInputChange = (e) => {
+    setConsoleInput(e.target.value);
+  };
+
+  const handleConsoleInputSubmit = (e) => {
+    if (e.key === 'Enter') {
+      handleRun(); // Run the code with the input when Enter is pressed
+    }
   };
 
   return (
@@ -267,12 +286,15 @@ function App() {
                 <option value="json">JSON</option>
 
               </select>
-              <button onClick={handleRun}>Run</button>
+              <button onClick={handleRun}>
+                {/* <Play size={14} /> */}
+                Run
+              </button>
             </div>
 
             <CodeMirror
               value={code}
-              height="300px"
+              height="100%"
               extensions={[languageExtensions[selectedLanguage]]}
               onChange={(newCode) => {
                 setCode(newCode);
@@ -285,9 +307,20 @@ function App() {
           <div className="console-area">
             <div className="console-header">
               <h3>Console/Terminal/Output</h3>
-              <button onClick={handleDebug} className="debug-button">Debug</button>
+              <button onClick={handleDebug} className="debug-button">
+                {/* <Bug size={14} /> */}
+                Debug
+              </button>
             </div>
-            <pre>{consoleOutput}</pre>
+            <pre className="console-output">{consoleOutput}</pre>
+            <input
+              type="text"
+              value={consoleInput}
+              onChange={handleConsoleInputChange}
+              onKeyDown={handleConsoleInputSubmit}
+              placeholder="Enter input for your code here..."
+              className="console-input"
+            />
           </div>
         </div>
 
