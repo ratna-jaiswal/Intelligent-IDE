@@ -196,6 +196,19 @@
   flex-shrink: 0;
 }
 
+.debug-button {
+  padding: 5px 10px;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.debug-button:hover {
+  background-color: #cc0000;
+}
+
 .chat-header h3 {
   margin: 0;
   font-size: 13px;
@@ -369,7 +382,7 @@
 
 /* Ensure CodeMirror background matches previous textarea */
 .code-mirror-editor .cm-editor {
-  background-color: #1e1e1e; 
+  background-color: #1e1e1e;
   color: #ffffff; 
   border-radius: 8px; 
   padding: 10px;

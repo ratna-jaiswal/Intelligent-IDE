@@ -115,20 +115,55 @@ function App() {
           'Content-Type': 'application/json',
         },
       });
-      if (response.data) {
-        console.log(response.data);
-        console.log(response.data.stdout);
+      if (response.data.stdout) {
         setConsoleOutput(response.data.stdout);
+      } else if (response.data.stderr) {
+        setConsoleOutput(`Error:\n${response.data.stderr}`);
       } else {
-        setConsoleOutput('No output received. Check API response.');
+        setConsoleOutput('No output received.');
       }
     } catch (error) {
       console.error('Compilation Error:', error.response?.data || error.message);
-      setConsoleOutput(`Error executing code: ${error.message}`);
+      const errorMessage = error.response?.data?.stderr || error.response?.data?.message || error.message;
+      setConsoleOutput(`Error executing code:\n${errorMessage}`);
     }
   };
 
-  const handleSendMessage = async (event?: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleDebug = async () => {
+    setChatResponse('Debugging...');
+    try {
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+        {
+          contents: [
+            {
+              parts: [
+                {
+                  text: `You are an expert programmer. Here’s ${selectedLanguage} code with an issue:\n\`\`\`\n${code}\n\`\`\`\nConsole Output/Error:\n\`\`\`\n${consoleOutput}\n\`\`\`\nPlease provide the corrected ${selectedLanguage} code in a \`\`\` block, followed by a concise explanation of what was fixed. Format your response as:\n\`\`\`\n<corrected code>\n\`\`\`\nExplanation: <what was changed>`
+                }
+              ]
+            }
+          ]
+        }
+      );
+
+      const aiResponse = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No correction provided.';
+      const codeMatch = aiResponse.match(/```[\s\S]*?```/);
+      const explanationMatch = aiResponse.match(/Explanation:[\s\S]*/);
+      
+      const correctedCode = codeMatch ? codeMatch[0].replace(/```/g, '').trim() : aiResponse;
+      const explanation = explanationMatch ? explanationMatch[0].trim() : 'No explanation provided.';
+
+      setCode(correctedCode); // Update the code editor with corrected code
+      setChatResponse(`AI: ${explanation}`); // Show explanation in chat
+      getCodeExplanation(correctedCode); // Update explanation section
+    } catch (error) {
+      console.error('Debug API Error:', error.response?.data || error.message);
+      setChatResponse('Error debugging code.');
+    }
+  };
+
+  const handleSendMessage = async (event) => {
     if (event) {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
@@ -143,41 +178,57 @@ function App() {
 
   const sendChatMessage = async () => {
     setChatResponse('Thinking...');
+    const messageLower = chatMessage.toLowerCase();
+    const isCodeRequest = /write|create|generate|give/.test(messageLower);
 
     try {
-      const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
-        {
-          contents: [
-            {
-              parts: [
-                {
-                  text: `You're an AI assistant to help people with their doubts in their code, explain it in as minimalistic way as possible.
-                  User's Code:
-                  \`\`\`
-                  ${code}
-                  \`\`\`
-      
-                  Console Output:
-                  \`\`\`
-                  ${consoleOutput}
-                  \`\`\`
-      
-                  User's Question:
-                  ${chatMessage}
-                  `
-                }
-              ]
-            }
-          ]
-        }
-      );
+      if (isCodeRequest) {
+        // Handle code generation
+        const response = await axios.post(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+          {
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `You are an expert programmer. Based on the request: "${chatMessage}", generate ${selectedLanguage} code to accomplish the task. Provide only the code, no explanations, within a \`\`\` block.`
+                  }
+                ]
+              }
+            ]
+          }
+        );
 
-      const aiResponse = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from AI.';
-      setChatResponse(`AI: ${aiResponse}`);
+        const aiResponse = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No code generated.';
+        const codeMatch = aiResponse.match(/```[\s\S]*?```/);
+        const generatedCode = codeMatch ? codeMatch[0].replace(/```/g, '').trim() : aiResponse;
+
+        setCode(generatedCode); // Update the code editor
+        setChatResponse(`AI: Code generated in ${selectedLanguage}. Check the editor!`);
+        getCodeExplanation(generatedCode); // Update explanation
+      } else {
+        // Handle explanation or other queries
+        const response = await axios.post(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+          {
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `You're an AI assistant to help with code doubts. User's Code:\n\`\`\`\n${code}\n\`\`\`\nConsole Output:\n\`\`\`\n${consoleOutput}\n\`\`\`\nUser's Question:\n${chatMessage}`
+                  }
+                ]
+              }
+            ]
+          }
+        );
+
+        const aiResponse = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from AI.';
+        setChatResponse(`AI: ${aiResponse}`);
+      }
     } catch (error) {
       console.error('API Error:', error.response?.data || error.message);
-      setChatResponse('Error fetching AI response.');
+      setChatResponse('Error processing request.');
     }
 
     setChatMessage('');
@@ -232,7 +283,10 @@ function App() {
 
           </div>
           <div className="console-area">
-            <h3>Console/Terminal/Output</h3>
+            <div className="console-header">
+              <h3>Console/Terminal/Output</h3>
+              <button onClick={handleDebug} className="debug-button">Debug</button>
+            </div>
             <pre>{consoleOutput}</pre>
           </div>
         </div>
