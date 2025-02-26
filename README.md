@@ -67,5 +67,5 @@ This will launch the application at **http://localhost:3000/**.
 Feel free to contribute by creating issues or submitting pull requests. Make sure to follow coding best practices and include proper documentation.
 
 ## Contact
-For questions or issues, reach out via GitHub Issues or email at your-email@example.com.
+For questions or issues, reach out via GitHub Issues or email at ratnajaiswalrj22@gmail.com
 
