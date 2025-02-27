@@ -34,6 +34,7 @@ function App() {
   const [codeExplanation, setCodeExplanation] = useState('Code explanation will appear here...');
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
   const [consoleInput, setConsoleInput] = useState(''); // New state for console input
+  const [chatLanguage, setChatLanguage] = useState('english'); // New state for chat language
 
   const getCodeExplanation = async (currentCode: string) => {
     if (!currentCode.trim() || currentCode === '// Write your code here') {
@@ -225,7 +226,7 @@ function App() {
               {
                 parts: [
                   {
-                    text: `You're an AI assistant to help with code doubts. User's Code:\n\`\`\`\n${code}\n\`\`\`\nConsole Output:\n\`\`\`\n${consoleOutput}\n\`\`\`\nUser's Question:\n${chatMessage}`
+                    text: `You're an AI assistant to help with code doubts. User's Code:\n\`\`\`\n${code}\n\`\`\`\nConsole Output:\n\`\`\`\n${consoleOutput}\n\`\`\`\nUser's Question:\n${chatMessage}\nRespond in ${chatLanguage}.`
                   }
                 ]
               }
@@ -238,7 +239,7 @@ function App() {
       }
     } catch (error) {
       console.error('API Error:', error.response?.data || error.message);
-      setChatResponse('Error processing request.');
+      setChatResponse('Error processing request (in ${chatLanguage}).`);');
     }
     setChatMessage('');
   };
@@ -329,8 +330,17 @@ function App() {
           <div className="chat-section">
             <div className="chat-header">
               <h3>AI Chat</h3>
-              <select defaultValue="english" className="chat-language-select">
+              <select
+                value={chatLanguage}
+                onChange={(e) => setChatLanguage(e.target.value)}
+                className="chat-language-select"
+              >
                 <option value="english">English</option>
+                <option value="hindi">Hindi</option>
+                <option value="assamese">Assamese</option>
+                <option value="bengali">Bengali</option>
+                <option value="gujarati">Gujarati</option>
+                <option value="german">German</option>
                 <option value="spanish">Spanish</option>
                 <option value="french">French</option>
               </select>
